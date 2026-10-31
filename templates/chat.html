@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>Agentic Operations Assistant</title>
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar" id="sidebar">
+    <a class="new-chat" href="{% url 'home' %}">+ New chat</a>
+
+    <div class="chat-list" id="chat-list"
+         data-chat-base="{% url 'conversation' 0 %}"
+         data-delete-base="{% url 'delete_chat' 0 %}">
+      {% for c in conversations %}
+        <div class="chat-item {% if current and c.id == current.id %}active{% endif %}" data-id="{{ c.id }}">
+          <a class="chat-link" href="{% url 'conversation' c.id %}">{{ c.title }}</a>
+          <button class="chat-del" type="button" title="Delete chat">&times;</button>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="user-box">
+      <span>{{ request.user.username }}</span>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Log out</button>
+      </form>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button id="menu-btn" type="button" aria-label="Menu">&#9776;</button>
+      <h1>Agentic Operations Assistant</h1>
+    </header>
+
+    <div class="messages" id="messages"
+         data-stream-url="{% url 'stream' %}"
+         data-home-url="{% url 'home' %}"
+         data-cid="{{ current.id|default:'' }}">
+
+      {% if not messages %}
+        <div class="welcome">
+          <h2>How can I help you today?</h2>
+          <p>Ask about stock, prices, currency rates, company policy or laptop news.</p>
+          <div class="examples">
+            <span class="example">How many Legion 5 are in stock?</span>
+            <span class="example">What is the price of Legion 5 in INR?</span>
+            <span class="example">Does the warranty cover a cracked screen?</span>
+            <span class="example">Explain what RAM is</span>
+          </div>
+        </div>
+      {% endif %}
+
+      {% for m in messages %}
+        {% if m.role == "user" %}
+          <div class="msg user"><div class="bubble">{{ m.text }}</div></div>
+        {% else %}
+          <div class="msg bot">
+            <div class="bot-box">
+              <button class="dots" type="button" aria-label="Show steps">&#8942;</button>
+              <div class="bubble">{{ m.text }}</div>
+              <div class="steps-panel">
+                {% for s in m.steps %}
+                  <div class="step {{ s.type }}"><b>{{ s.type|upper }}</b>{{ s.text }}</div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="composer">
+      <input id="q" placeholder="Ask something..." autocomplete="off">
+      <button id="send" type="button">Send</button>
+    </div>
+  </main>
+</div>
+
+<script src="{% static 'js/chat.js' %}"></script>
+</body>
+</html>

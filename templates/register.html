@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register</title>
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <h1>Agentic Operations Assistant</h1>
+    <h2>Create account</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<div class="help">{{ field.help_text|safe }}</div>{% endif %}
+        {% for err in field.errors %}<div class="form-error">{{ err }}</div>{% endfor %}
+      {% endfor %}
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+  </div>
+</body>
+</html>

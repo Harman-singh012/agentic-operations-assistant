@@ -1,0 +1,14 @@
+Lenovo-Style Demo Policy (sample data for portfolio project)
+
+Warranty: All laptops include a 1-year limited hardware warranty from the date of purchase.
+Extended warranty of 2 or 3 years can be bought within 30 days of purchase.
+
+Returns: Unopened laptops can be returned within 14 days for a full refund.
+Opened laptops can be returned within 7 days, with a 10 percent restocking fee.
+
+Battery: Batteries are covered for 6 months. Normal wear after that is not covered.
+
+Accidental damage: Cracked screens and liquid damage are not covered by the standard warranty.
+Accidental damage protection can be added for an extra fee at purchase.
+
+Support: Customers can open a support ticket online. Standard response time is 2 business days.
